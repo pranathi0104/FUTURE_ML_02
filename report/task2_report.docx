@@ -1,0 +1,293 @@
+
+# SUPPORT TICKET CLASSIFICATION & PRIORITIZATION
+
+## Project Overview
+
+This project was developed as part of the Future Interns Machine Learning Internship Program.
+
+The objective of this project was to build a machine learning-based system capable of automatically classifying IT support tickets into predefined categories. In organizations that handle thousands of support requests, manually sorting and routing tickets can be time-consuming and inefficient. This project demonstrates how Natural Language Processing (NLP) and Machine Learning can be used to automate ticket classification and improve operational efficiency.
+
+The developed model analyzes the text content of support tickets and predicts the appropriate category, enabling faster ticket routing and response management.
+
+---
+
+## Problem Statement
+
+Support teams receive a large number of tickets every day related to hardware issues, access requests, storage problems, HR support, and other technical concerns.
+
+Manual categorization of tickets often results in:
+
+* Increased response times
+* Higher workload for support staff
+* Delays in ticket assignment
+* Reduced operational efficiency
+
+The goal of this project is to automate the classification process using machine learning techniques.
+
+---
+
+## Dataset Information
+
+### Dataset Used
+
+**all_tickets_processed_improved_v3.csv**
+
+### Dataset Size
+
+* Total Records: **47,837 Support Tickets**
+* Categories: **8**
+
+### Ticket Categories
+
+* Access
+* Administrative Rights
+* HR Support
+* Hardware
+* Internal Project
+* Miscellaneous
+* Purchase
+* Storage
+
+### Category Distribution
+
+| Category              | Number of Tickets |
+| --------------------- | ----------------: |
+| Hardware              |            13,617 |
+| HR Support            |            10,915 |
+| Access                |             7,125 |
+| Miscellaneous         |             7,060 |
+| Storage               |             2,777 |
+| Purchase              |             2,464 |
+| Internal Project      |             2,119 |
+| Administrative Rights |             1,760 |
+
+The dataset contains real-world IT support ticket descriptions and their corresponding categories.
+
+---
+
+## Data Preprocessing
+
+To prepare the text data for machine learning, several preprocessing steps were performed.
+
+### Text Cleaning
+
+The following operations were applied:
+
+* Converted all text to lowercase
+* Removed punctuation marks
+* Removed special characters
+* Removed numerical values where necessary
+* Removed English stopwords
+* Normalized text for consistency
+
+### Example
+
+**Original Ticket**
+
+```text
+I forgot my password and cannot access my account.
+```
+
+**Cleaned Ticket**
+
+```text
+forgot password access account
+```
+
+These preprocessing steps reduce noise and improve the quality of textual features.
+
+---
+
+## Feature Engineering
+
+Machine learning algorithms cannot process raw text directly. Therefore, text data was converted into numerical representations using TF-IDF.
+
+### TF-IDF (Term Frequency – Inverse Document Frequency)
+
+TF-IDF measures the importance of a word within a document relative to the entire dataset.
+
+Configuration used:
+
+```python
+TfidfVectorizer(
+    stop_words='english',
+    min_df=2,
+    max_df=0.9,
+    ngram_range=(1,2)
+)
+```
+
+### Parameter Explanation
+
+* **stop_words='english'** → Removes common English words
+* **min_df=2** → Ignores extremely rare words
+* **max_df=0.9** → Removes overly common words
+* **ngram_range=(1,2)** → Uses both single words and two-word phrases
+
+### Generated Features
+
+After vectorization:
+
+```text
+Feature Matrix Shape:
+(47837, 145149)
+```
+
+Meaning:
+
+* 47,837 support tickets
+* 145,149 textual features
+
+---
+
+## Model Development
+
+### Algorithm Used
+
+**Linear Support Vector Classifier (LinearSVC)**
+
+LinearSVC was selected because it performs exceptionally well for text classification tasks involving high-dimensional TF-IDF features.
+
+### Training Procedure
+
+1. Dataset split into training and testing sets
+2. Training data used to train the model
+3. Test data used for evaluation
+4. Predictions generated for unseen tickets
+
+### Train-Test Split
+
+```text
+Training Data: 80%
+Testing Data: 20%
+```
+
+Random State:
+
+```text
+42
+```
+
+to ensure reproducibility.
+
+---
+
+## Model Evaluation
+
+The model was evaluated using:
+
+* Accuracy
+* Precision
+* Recall
+* F1-Score
+* Confusion Matrix
+
+### Overall Accuracy
+
+```text
+85.6%
+```
+
+### Classification Report
+
+
+| Category              | Precision | Recall | F1-Score |
+| --------------------- | --------: | -----: | -------: |
+| Access                |      0.92 |   0.89 |     0.90 |
+| Administrative Rights |      0.84 |   0.73 |     0.78 |
+| HR Support            |      0.85 |   0.85 |     0.85 |
+| Hardware              |      0.82 |   0.87 |     0.84 |
+| Internal Project      |      0.89 |   0.82 |     0.86 |
+| Miscellaneous         |      0.82 |   0.83 |     0.82 |
+| Purchase              |      0.96 |   0.89 |     0.92 |
+| Storage               |      0.92 |   0.87 |     0.89 |
+
+### Average Metrics
+
+| Metric             | Score |
+| ------------------ | ----: |
+| Accuracy           |  0.86 |
+| Weighted Precision |  0.86 |
+| Weighted Recall    |  0.86 |
+| Weighted F1-Score  |  0.86 |
+
+---
+
+## Confusion Matrix Analysis
+
+A confusion matrix was generated to visualize classification performance across all categories.
+
+Observations:
+
+* Most tickets were correctly classified.
+* Purchase tickets achieved the highest precision.
+* Access and Storage categories showed strong classification performance.
+* Minor overlap was observed between Hardware, HR Support, and Miscellaneous categories.
+* Overall model performance remained consistent across all categories.
+
+The confusion matrix demonstrates that the classifier can effectively distinguish between different support ticket types.
+
+---
+
+## Custom Ticket Prediction
+
+To validate the model on unseen data, a custom support ticket was tested.
+
+### Input Ticket
+
+```text
+I forgot my password and cannot access my account.
+```
+
+### Predicted Category
+
+```text
+Access
+```
+
+The prediction correctly reflects the nature of the ticket and demonstrates the model’s ability to generalize to new support requests.
+
+---
+
+## Business Impact
+
+This solution provides practical value for organizations by:
+
+* Automatically categorizing incoming support tickets
+* Reducing manual ticket triage effort
+* Improving response and resolution times
+* Increasing operational efficiency
+* Supporting scalable customer and IT support operations
+
+The system can be integrated into helpdesk platforms to assist support teams in handling large ticket volumes.
+
+---
+
+## Skills Demonstrated
+
+This project demonstrates practical skills in:
+
+* Natural Language Processing (NLP)
+* Text Cleaning and Preprocessing
+* TF-IDF Feature Engineering
+* Machine Learning Classification
+* Support Ticket Automation
+* Model Evaluation
+* Data Visualization
+* Business Problem Solving
+
+---
+
+## Conclusion
+
+A machine learning-based support ticket classification system was successfully developed using Natural Language Processing techniques and the Linear Support Vector Classifier (LinearSVC).
+
+The model was trained on 47,837 support tickets across eight categories and achieved an accuracy of **85.6%**. Results indicate that the system can effectively classify support requests and assist organizations in automating ticket routing processes.
+
+This project demonstrates the practical application of machine learning in business operations and customer support environments, providing measurable improvements in efficiency and scalability.
+
+---
+
+**Project:** FUTURE_ML_02 – Support Ticket Classification & Prioritization
+**Internship Program:** Future Interns Machine Learning Internship Program
+**Tools Used:** Python, Pandas, Scikit-Learn, NLP, TF-IDF, LinearSVC, Matplotlib, Jupyter Notebook
