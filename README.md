@@ -38,6 +38,22 @@ Dataset: **all_tickets_processed_improved_v3.csv**
 
 ---
 
+## Dashboard Preview
+
+### Prediction Dashboard
+
+![Dashboard](images/dashboard_overview.png)
+
+### Category Distribution
+
+![Distribution](images/category_distribution.png)
+
+### Confusion Matrix
+
+![Confusion Matrix](images/confusion_matrix_dashboard.png)
+
+---
+
 ## 🛠️ Technologies Used
 
 * Python
